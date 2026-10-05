@@ -3,7 +3,7 @@
 -- comeÃ§o projeto TechShop
 -- =============
 
-  CREATE DATABASE techshop;
+  -- CREATE DATABASE techshop;
 -- criado o banco de dados
 
 USE techshop;
@@ -155,8 +155,20 @@ UPDATE pedidos p
 	JOIN produtos pr ON p.produtos = pr.nome
     SET p.produtos_id = pr.id;
 
- 
+INSERT INTO produtos (nome, descricao, preco, estoque)
+	VALUES ('Braço Articulado para Monitor', 'Suporte a gas com ajuste de altura e inclinacao', 219.90, 14),
+('Fonte 650W 80 Plus', 'Fonte de alimentacao modular para PC gamer', 349.90, 10);
 
+SELECT nome,preco,estoque FROM  produtos
+WHERE id = 6;
+
+ SELECT * FROM produtos;
+	 
+UPDATE produtos SET preco = (preco * 0.1) + preco WHERE id = 6;
+
+UPDATE produtos SET estoque = estoque - 3 WHERE id = 6;
+
+DELETE FROM produtos WHERE id = 13;
     
 
 	
