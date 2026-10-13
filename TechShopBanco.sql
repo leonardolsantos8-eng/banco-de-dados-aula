@@ -3,7 +3,7 @@
 -- comeÃ§o projeto TechShop
 -- =============
 
-  -- CREATE DATABASE techshop;
+  CREATE DATABASE techshop;
 -- criado o banco de dados
 
 USE techshop;
@@ -169,7 +169,42 @@ UPDATE produtos SET preco = (preco * 0.1) + preco WHERE id = 6;
 UPDATE produtos SET estoque = estoque - 3 WHERE id = 6;
 
 DELETE FROM produtos WHERE id = 13;
-    
+
+SELECT * FROM categorias;
+
+UPDATE produtos
+SET categorias_id = 1
+WHERE id IN (1,2,5,8,11);
+
+UPDATE produtos
+SET categorias_id = 2
+WHERE id IN (3,4,9);
+
+UPDATE produtos
+SET categorias_id = 3
+WHERE id IN (6,7,10,12,14);
+
+SELECT c.nome AS categoria,
+       COUNT(*) AS qtd_produtos,
+       AVG(p.preco) AS preco_medio
+FROM produtos p
+INNER JOIN categorias c ON p.categorias_id = c.id
+GROUP BY c.nome;
+
+
+SELECT * FROM pedidos;
+
+SELECT c.nome AS categoria,
+       SUM(ip.quantidade * ip.preco) AS faturamento
+FROM pedidos ip
+INNER JOIN produtos p   ON ip.produto_id = p.id
+INNER JOIN categorias c ON p.categoria_id = c.id
+GROUP BY c.nome
+ORDER BY faturamento DESC;
+	
+
+
+
 
 	
 
