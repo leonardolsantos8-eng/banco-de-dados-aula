@@ -202,7 +202,41 @@ INNER JOIN categorias c ON p.categoria_id = c.id
 GROUP BY c.nome
 ORDER BY faturamento DESC;
 	
+DROP PROCEDURE IF EXISTS sp_avaliar_estoque;
 
+DELIMITER //
+CREATE PROCEDURE sp_avaliar_estoque(IN p_produto_id INT, IN p_limite INT)
+BEGIN
+	DECLARE v_nome VARCHAR(100);
+    DECLARE v_estoque INT;
+    declare v_existe INT;
+    
+    SELECT COUNT(*) INTO v_existe FROM produtos WHERE id = p_produto_id;
+    
+    IF v_existe = 0 THEN
+		SELECT 'Produtos inexistente' AS situacao;
+	ELSE 
+		SELECT nome, estoque INTO v_nome, v_estoque
+        FROM produtos WHERE id = p_produto_id;
+        
+        IF v_estoque = 0 THEN
+			SELECT v_nome AS produto, v_estoque AS estoque, 'Esgotado' AS situacao;
+		ELSEIF v_estoque < p_limite THEN
+			SELECT v_nome AS produto, v_estoque AS estoque, 'Estoque baixo' AS situacao;
+		ELSE
+			SELECT v_nome AS produto, v_estoque AS estoque, 'Estoque suficiente' AS situacao;
+		END IF;
+	END IF;
+END //
+DELIMITER ;
+CALL sp_avaliar_estoque(3, 15);
+
+SELECT * FROM produtos;
+
+            
+        
+        
+        
 
 
 
