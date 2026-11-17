@@ -233,13 +233,69 @@ CALL sp_avaliar_estoque(3, 15);
 
 SELECT * FROM produtos;
 
-            
-        
-        
-        
 
 
-
+CREATE TABLE avaliacoes(
+	avaliacoes_id INT AUTO_INCREMENT PRIMARY KEY,
+    produto_id INT NOT NULL,
+    cliente_id INT NOT NULL,
+    nota TINYINT NOT NULL,
+    comentario VARCHAR(255),
+    data_avaliacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT fk_avaliacoe_produto
+		FOREIGN KEY (produto_id) REFERENCES produtos(id),
+        
+	CONSTRAINT fk_avaliacoes_cliente
+		FOREIGN KEY (cliente_id) REFERENCES clientes(id),
+     
+     CONSTRAINT chk_avaliacoes_nota
+		CHECK (nota BETWEEN 1 AND 5)
 	
+);  
+
+    
+ALTER TABLE avaliacoes
+	MODIFY COLUMN comentario VARCHAR(500),
+	ADD COLUMN recomenda BOOLEAN NOT NULL DEFAULT TRUE,
+	ADD CONSTRAINT uq_avaliacao_cliente_produto UNIQUE (cliente_id, produto_id);
+    
+ DESCRIBE avaliacoes;   
+ 
+ SELECT * FROM avaliacoes;
+ 
+ INSERT INTO avaliacoes (produto_id, cliente_id, nota, comentario) VALUES
+ ('1', '1', '5', 'AGFJAIFQAJFIQAFIJAIFAIJF' );
+        
+ INSERT INTO clientes (nome, email) VALUES
+ ('Shampoo', 'shampo@email.com');
+ 
+ INSERT INTO avaliacoes (produto_id, cliente_id, nota, comentario) VALUES
+ ('2', '1', '6');
+--  nota acima do valor 
+
+ INSERT INTO avaliacoes (produto_id, cliente_id, nota, comentario) VALUES
+ ('999', '1', '4');
+ -- produto inexistente 
+
+
+INSERT INTO avaliacoes (produto_id, cliente_id, nota, comentario) VALUES
+ ('1', '1', '4');    
+ -- mesmo cliente avaliando o mesmo produto 
+ 
+ CREATE TABLE rascunho_pai (
+  id   INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE rascunho_filho (
+  id     INT AUTO_INCREMENT PRIMARY KEY,
+  pai_id INT NOT NULL,
+  CONSTRAINT fk_rascunho_pai FOREIGN KEY (pai_id) REFERENCES rascunho_pai(id)
+);	
+
+DROP TABLE rascunho_filho; 
+
+DROP TABLE rascunho_pai;
 
 
