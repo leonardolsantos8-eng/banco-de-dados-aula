@@ -297,5 +297,23 @@ CREATE TABLE rascunho_filho (
 DROP TABLE rascunho_filho; 
 
 DROP TABLE rascunho_pai;
+SELECT * FROM produtos;
+
+CREATE OR REPLACE VIEW v_estoque_baixo AS
+SELECT id, nome AS produtos, estoque
+FROM produtos WHERE estoque <= 20;
+
+SELECT * FROM  v_estoque_baixo;
+		
+		
+
+
+
+	
+    
+    
+
+
+
 
 
